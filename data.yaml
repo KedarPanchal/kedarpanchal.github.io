@@ -31,6 +31,14 @@ education:
     - Multivariable Calculus
 
 experience:
+  - title: Undergraduate Teaching Assistant, Department of Computer Science
+    company: Texas A&M University
+    location: College Station, TX
+    start: September 2026
+    end: Present
+    bullets:
+      - "Graded and taught 20+ honors students students in CSCE 222: Discrete Structures for Computing."
+      - Held one-on-one office hours to assist students with homework and exam preparation.
   - title: Software Engineer Intern, Mission Systems
     company: Northrop Grumman
     location: San Antonio, TX
