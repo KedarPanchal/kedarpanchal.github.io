@@ -191,6 +191,7 @@ skills:
     - Linux
     - PostgreSQL
     - Redis
+    - Maven
 
 certifications:
   - Get Started with Redis
