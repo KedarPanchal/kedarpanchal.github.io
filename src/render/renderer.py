@@ -44,7 +44,7 @@ class LatexRenderer(Renderer):
             r"{\Huge \textbf{" + src.name + r"}} \\ [0.5em]",
             r"\small \href{mailto:" + src.info.email + r"}{" + src.info.email + r"} {\textbar }",
             r"\small " + src.info.phone + r" {\textbar }",
-            r"\small Website: \href{https://www." + src.info.website + r"}{" + src.info.website + r"} {\textbar }",
+            r"\small Website: \href{https://" + src.info.website + r"}{" + src.info.website + r"} {\textbar }",
             r"\small LinkedIn: \href{https://www.linkedin.com/in/" + src.info.linkedin + r"}{" + src.info.linkedin + r"} \\",
             r"\small GitHub: \href{https://www.github.com/" + src.info.github + r"}{" + src.info.github + r"} {\textbar }",
             r"\small Hugging Face: \href{https://www.huggingface.co/" + src.info.hugging_face + r"}{" + src.info.hugging_face + r"}",
