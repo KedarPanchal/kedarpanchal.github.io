@@ -19,8 +19,8 @@ jobs:
   changes:
     runs-on: ubuntu-latest
     outputs:
-      resume: $ {{ steps.filter.outputs.resume }}
-      site: $ {{ steps.filter.outputs.site }}
+      resume: ${{ steps.filter.outputs.resume }}
+      site: ${{ steps.filter.outputs.site }}
     steps:
       - name: Checkout Repository
         uses: actions/checkout@v7
@@ -33,11 +33,13 @@ jobs:
               - "data.yaml"
               - "resume.view.yaml"
               - "src/render/renderer.py"
+              - ".github/workflows/render.yaml"
             site:
               - "data.yaml"
               - "site.view.yaml"
               - "src/render/renderer.py"
               - "site/**"
+              - ".github/workflows/render.yaml"
 
   render:
     runs-on: ubuntu-latest
