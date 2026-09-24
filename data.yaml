@@ -136,7 +136,7 @@ projects:
     end: January 2026
     url: https://devpost.com/software/mr-breathe
     bullets:
-      - Detected and classified respiratory diseases by inventing intelligent spirometer.
+      - Detected and classified respiratory diseases by inventing Arduino-powered intelligent spirometer.
       - Interfaced spirometer with Swift iOS app for real-time data analysis using custom bluetooth code.
       - Served data to app using Spring Boot backend and PostgreSQL database.
   - title: Hello World from Scratch
