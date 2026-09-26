@@ -33,11 +33,13 @@ jobs:
               - "data.yaml"
               - "resume.view.yaml"
               - "src/render/renderer.py"
+              - "src/render/latex_renderer.py"
               - ".github/workflows/render.yaml"
             site:
               - "data.yaml"
               - "site.view.yaml"
               - "src/render/renderer.py"
+               - "src/render/jekyll_renderer.py"
               - "site/**"
               - ".github/workflows/render.yaml"
 
