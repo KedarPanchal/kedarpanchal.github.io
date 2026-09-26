@@ -39,7 +39,7 @@ jobs:
               - "data.yaml"
               - "site.view.yaml"
               - "src/render/renderer.py"
-               - "src/render/jekyll_renderer.py"
+              - "src/render/jekyll_renderer.py"
               - "site/**"
               - ".github/workflows/render.yaml"
 
