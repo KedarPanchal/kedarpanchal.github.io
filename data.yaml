@@ -19,16 +19,16 @@ education:
   end: May 2028
   gpa: 4.0
   courses:
-    - Software Engineering
-    - Computer Systems
-    - Cryptography
     - Data Structures and Algorithms
-    - Computer Organization
-    - Programming Languages
-    - Program Systems and Design
+    - Computer Systems
     - Linear Algebra
     - Statistics
+    - Cryptography
+    - Software Engineering
+    - Computer Organization
+    - Programming Languages
     - Multivariable Calculus
+    - Program Systems and Design
 
 experience:
   - title: Undergraduate Teaching Assistant, Department of Computer Science
@@ -37,142 +37,98 @@ experience:
     start: September 2026
     end: Present
     bullets:
-      - "Graded and taught 20+ honors students students in CSCE 222: Discrete Structures for Computing."
-      - Held one-on-one office hours to assist students with homework and exam preparation.
+      - "Teaching Assistant for CSCE 222: Discrete Structures for Computing, supporting 20+ honors students in proofs, induction, runtime analysis, and combinatorics."
+      - Write rubrics for and grade 15+ student submissions biweekly, providing written feedback.
+      - Run appointment-based one-on-one and small-group (5+ students) sessions on proofs and exam preparation.
   - title: Software Engineer Intern, Mission Systems
     company: Northrop Grumman
     location: San Antonio, TX
     start: June 2026
     end: August 2026
     bullets:
-      - Updated legacy C code to eliminate memory vulnerabilities by designing locally-deployed agentic code translation system.
-      - Improved agent accuracy for 2000+ LOC repositories with a 7-stage agent-driven code evaluation and test generation loop.
-      - Automated documentation generation, code linting, and deployment by designing GitLab CI/CD pipelines.
-      - Reduced deployment time by 92% by creating Ansible playbook to configure multi-container Podman application.
-      - Communicated project progress across 3 product demonstrations to executive stakeholders and senior leadership.
+      - Designed a locally deployed agentic system that translates legacy C to Rust, eliminating memory vulnerabilities in-house.
+      - Built a 7-stage agentic loop (translate, evaluate, generate tests, execute) that reduced mistranslations on repositories of 2000+ LOC.
+      - Designed GitLab CI/CD pipelines to automate documentation generation, code linting, and deployment.
+      - Cut deployment time by 92% by creating Ansible playbook configuring a multi-container Podman application.
+      - Presented progress in 3 demonstrations to executives and senior leadership, contributing to planned adoption in client-facing projects.
   - title: Research Assistant, Department of Computer Science
     company: Texas A&M University
     location: College Station, TX
     start: January 2026
     end: Present
     bullets:
-      - Conducted research on planning algorithms for blind robots with limited sensing capabilities.
-      - Validated algorithm by implementing simulation environment in C++ and CGAL.
+      - Designed and analyzed coverage algorithms for blind robots with limited sensing capabilities in polygonal environments with obstacles.
+      - Built a C++/CGAL simulation environment with exact polygon arithmetic to validate algorithm correctness and coverage.
+      - Reduced peak memory use by 90% and runtime by 85% by diagnosing redundant geometric computations and caching repeated results.
+      - Debugged heap-use-after-free errors and geometric inconsistencies using LLDB and AddressSanitizer.
   - title: AI Engineer
     company: Firelight Innovations
     location: College Station, TX
     start: September 2025
     end: January 2026
     bullets:
-      - Automated live website development during client calls by developing LangChain agent with video conferencing integration.
-      - Improved response time and context retrieval by connecting to LLM-optimized databases such as Redis and ChromaDB.
-  - title: Student Researcher, Department of Animal Science
-    company: Texas A&M University
-    location: College Station, TX
-    start: August 2025
-    end: December 2025
-    bullets:
-      - Created 2 system dynamics models in Vensim to generate synthetic datasets for ML-powered dairy farm analysis. 
-      - Researched over 30 components of Water-Energy-Food nexus in dairy farms to create accurate simulations. 
-      - Drafted system dynamics research paper for conference presentation.
+      - Integrated Recall.ai to stream live meeting audio into real-time transcription pipeline that handled partial transcripts and speaker diarization.
+      - Designed LangChain pipeline that transformed meeting transcripts into structured data and generated websites live during client calls.
+      - Pitched the product at 2 competitions, presenting technical features and live demo to judges and investors.
   - title: Automation Developer
     company: MathNMore LLC
     location: Austin, TX
     start: July 2022
     end: July 2025
     bullets:
-     - Reduced loan payment notification time by 97.5% by developing JavaScript programs to automate late notice issuance.
-     - Tracked insurance payments for properties by writing JavaScript programs to interface with existing spreadsheet infrastructure.
-  - title: Assistant Project Manager
-    company: Recharge Realty LLC
-    location: Austin, TX
-    start: July 2022
-    end: July 2025
-    bullets:
-      - Project-managed and performed real-estate renovation projects on 4 class B and C properties across Texas. 
-      - Carried out various installation, repair, and make-ready tasks for property maintenance and upkeep. 
-      - Coordinated with team-members to verify properties met move-out standards defined in lease agreement.
-  - title: Academic Tutor
-    company: Eye Level Learning
-    location: Austin, TX
-    start: June 2024
-    end: December 2024
-    bullets:
-      - Tutored Pre-K to high school-aged students in English and math. 
-      - Designed summer camp science activities for elementary-aged students. 
-      - Revitalized older computers by installing lightweight Linux distributions like Puppy Linux and ChromeOS. 
+      - Reduced loan payment notification time by 97.5% (2 hours to 3 minutes each month) by developing JavaScript automation that generates and issues late notices for 20+ loans.
+      - Tracked insurance payments for 20+ properties, integrating with existing spreadsheets for accessibility for non-technical employees.
+      - Maintained both automations for three years, updating scripts to accommodate changes in property acquisition and loan policies.
   - title: Summer Robotics Research Intern, RobIn Lab
     company: University of Texas at Austin
     location: Austin, TX
     start: June 2024
     end: July 2024
     bullets:
-      - Trained award-winning BaRiFlex robotic graspers with reinforcement machine learning to manipulate surroundings. 
-      - Developed Python scripts to encode sensor data collected by Robot Operating System into AI-friendly HDF5 archives. 
-      - Programmed feedforward and convolutional neural networks to train robotic arm using PyTorch. 
-      - Designed Docker containers for cross-platform development on Linux-exclusive software. 
-      - Constructed the robot apparatus used in the research using 3-D printed material. 
-  - title: Academic Tutor
-    company: Global Impact Initiative
-    location: Austin, TX
-    start: June 2023
-    end: August 2023
-    bullets:
-      - Tutored Afghan and Ukrainian refugees in English and math. 
-      - Created lesson plans tailored to student's unique academic needs. 
-      - Frequently corresponded with parents to create an ever-evolving, continuous learning environment.
-
+      - Trained reinforcement learning policies for award-winning BaRiFlex robotic gripper to perform range of dexterous manipulation tasks.
+      - Built Python data pipelines converting ROS sensor recordings into HDF5 datasets for model training.
+      - Containerized Linux-only ROS toolchain with Docker for cross-platform development.
+      - Constructed the 3-D printed robot apparatus used in experiments.
+  
 projects:
   - title: SWRM
     start: September 2026
     end: Present
     url: https://github.com/turtle-robotics/SWRM-Monorepo
     bullets:
-      - Programmed parallelized flocking control algorithms for swarm of 20+ robots using C++.
-      - Designed simulation environment in ROS2 and Gazebo to test algorithms on virtual robots.
+      - Implement Olfati-Saber flocking control in C++ for swarm of 20+ robots.
+      - Designed ROS2 and Gazebo simulation environment modeling flocking dynamics to validate swarm algorithms before hardware deployment.
   - title: IMC Prosperity 4
     start: April 2026
     end: May 2026
     url: https://github.com/KedarPanchal/IMC-Prosperity-4
     bullets:
-      - Analyzed commodity market data to place within top 2.6% of competitors by building dashboard with Python and Matplotlib.
-      - Classified competing informed traders and detected outliers by implementing k-means clustering and isolation tree algorithms.
-      - Extracted meaningful patterns from noisy time-series data by preprocessing with Fourier transforms and Haar wavelet transforms.
+      - Placed in top 2.6% of 18,800 competitors in IMC Prosperity 4, a global algorithmic trading competition.
+      - Identified informed traders with k-means clustering and flagged anomalous trades with isolation forest algorithms to match high-performing competitors' strategies.
+      - Denoised time-series data with Fourier and Haar wavelet transforms to extract trends to guide algorithm design.
+      - Built Python and Matplotlib dashboard for exploring order book data and visualizing trader clusters.
   - title: Mr. Breathe
     start: January 2026
     end: January 2026
     url: https://devpost.com/software/mr-breathe
     bullets:
-      - Interfaced custom-built intelligent spirometer with Swift iOS app for real-time data analysis using custom bluetooth code.
-      - Served data to app using Spring Boot backend and PostgreSQL database.
+      - Built intelligent spirometer measuring volume with Arduino, streaming data to Swift iOS app via custom BLE protocol.
+      - Architected Spring Boot backend and PostgreSQL database to store per-user profiles and spirometer readings.
   - title: Hello World from Scratch
     start: September 2025
     end: December 2025
     url: https://github.com/CSCE-120-Honors-Project/Hello-World-from-Scratch
     bullets:
-      - Developed bare-metal bootloader on ARM Cortex A53 chip to load and execute program from disk.
-      - Wrote FAT32 filesystem and VirtIO disk drivers in C.
-  - title: FLAN T5-Small Fine-Tuned for Summarization
-    start: July 2025
-    end: July 2025
-    url: https://huggingface.co/KedarPanchal/flan-t5-small-summary-finetune
-    bullets:
-      - Fine-tuned FLAN-T5-Small transformer trained to summarize text. 
-      - Trained on abstracts from publicly available research papers and their summaries. 
-      - Hugging Face Transformers framework used to fine-tune model using Low Rank Adaptation (LoRA).
-  - title: Fine-Tuning EfficientNet-B1 for Breast Cancer Classification
-    start: June 2025
-    end: June 2025
-    url: https://github.com/KedarPanchal/Fine-Tuning-EfficientNet-B1-for-Breast-Cancer-Classification
-    bullets:
-      - Fine-tuned EfficientNet-B1 convolutional neural network using PyTorch to detect malignant tumors in ultrasounds. 
-      - Presented fine-tuning and data preprocessing pipeline in Jupyter Notebook.
+      - Co-developed bare-metal bootloader for ARM Cortex-A53 in C and assembly that loads and executes a program from disk, with no OS or standard library.
+      - Implemented the FAT32 filesystem driver from scratch, enabling the bootloader to read files from a virtual disk under QEMU.
+      - Wrote linker scripts defining the memory layout for bootloader and loaded program.
   - title: GIMP AI Inpainter
     start: January 2025
     end: March 2025
     url: https://github.com/KedarPanchal/GIMP-AI-Inpainting
     bullets:
-      - Added generative AI inpainting capabilities to GIMP 3.0 by developing Python plugin that leveraged Hugging Face Diffusers.
+      - Built Python plugin for GIMP 3.0 that adds generative AI inpainting, passing user selections as masks to SDXL model and returning results as new layers.
+      - Bootstrapped pip onto GIMP's bundled Python interpreter to install dependencies, working around GIMP's lack of package management in the plugin environment.
 
 skills:
   languages:
@@ -195,10 +151,12 @@ skills:
     - Git
     - GitLab CI/CD
     - GitHub Actions
+    - Podman
     - Linux
     - PostgreSQL
-    - Redis
     - Maven
+    - CMake
+    - Redis
 
 certifications:
   - Get Started with Redis

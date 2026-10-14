@@ -10,9 +10,12 @@ education:
     - start
     - end
     - courses:
-        exclude:
-          - Programming Languages
-          - Multivariable Calculus
+        include:
+          - 0
+          - 1
+          - 2
+          - 3
+          - 4
 
 experience:
   include:
@@ -23,16 +26,14 @@ experience:
 
 projects:
   include:
-    - 0
     - 1
-    - 2
     - 3
 
 skills:
   include:
     - languages:
         exclude:
-          - Haskell
+          - 7
     - frameworks
     - tools
 

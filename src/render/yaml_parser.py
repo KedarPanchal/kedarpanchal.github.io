@@ -27,14 +27,14 @@ class YamlParser:
                     result = result or []
                     result.append(source[key][item])  # type: ignore
                 else:
-                    # Since indexing by key implies source[key] is a dictionary, result must be a dictionary as well
-                    # This means we cannot mix and match dictionary keys and indices
+                    # For simplicity, we cannot mix and match dictionary keys and indices
                     if not isinstance(result, dict):
                         raise ValueError("Cannot mix indexing and non-indexing snapshots")
                     # Add strings raw
                     if isinstance(item, str):
                         if item not in source[key]:
                             raise ValueError(f"Item '{item}' not found in source for key '{key}'.")
+                        # Item is already a key, so we can add it directly to the result dictionary
                         result[item] = source[key][item]
                     # Handle nested dictionaries
                     elif isinstance(item, dict):

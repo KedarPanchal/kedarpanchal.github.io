@@ -20,6 +20,8 @@ class LatexRenderer(Renderer):
 \usepackage{setspace}
 \setstretch{0.92}
 \usepackage{scalefnt}
+\usepackage{enumitem}
+\setlist[itemize]{noitemsep}
 
 \newcommand{\resumesection}[1]{\noindent\underline{\makebox[\textwidth][l]{\scalefont{1.1}\textbf{#1}}}}
 
@@ -93,7 +95,7 @@ class LatexRenderer(Renderer):
     
     def _skills_certifications(self, src: SimpleNamespace) -> str:
         result_list = [
-            r"\resumesection{SKILLS \& CERFIFICATIONS}",
+            r"\resumesection{SKILLS \& CERTIFICATIONS}",
             r"\begin{itemize}",
             r"\item \textbf{Programming Languages:} " + ', '.join(src.skills.languages),
             r"\item \textbf{Frameworks:} " + ', '.join(src.skills.frameworks),
