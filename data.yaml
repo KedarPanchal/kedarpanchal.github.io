@@ -123,6 +123,13 @@ experience:
       - Frequently corresponded with parents to create an ever-evolving, continuous learning environment.
 
 projects:
+  - title: SWRM
+    start: September 2026
+    end: Present
+    url: https://github.com/turtle-robotics/SWRM-Monorepo
+    bullets:
+      - Programmed parallelized flocking control algorithms for swarm of 20+ robots using C++.
+      - Designed simulation environment in ROS2 and Gazebo to test algorithms on virtual robots.
   - title: IMC Prosperity 4
     start: April 2026
     end: May 2026
@@ -136,8 +143,7 @@ projects:
     end: January 2026
     url: https://devpost.com/software/mr-breathe
     bullets:
-      - Detected and classified respiratory diseases by inventing Arduino-powered intelligent spirometer.
-      - Interfaced spirometer with Swift iOS app for real-time data analysis using custom bluetooth code.
+      - Interfaced custom-built intelligent spirometer with Swift iOS app for real-time data analysis using custom bluetooth code.
       - Served data to app using Spring Boot backend and PostgreSQL database.
   - title: Hello World from Scratch
     start: September 2025
@@ -170,19 +176,20 @@ projects:
 
 skills:
   languages:
-    - Bash
-    - C/C++
-    - Haskell
-    - HTML/CSS
-    - Java
     - Python
-    - SQL
+    - C/C++
     - TypeScript/JavaScript
+    - Java
+    - SQL
+    - Bash
+    - HTML/CSS
+    - Haskell
   frameworks:
     - FastAPI
     - LangGraph
     - Next.js
     - React
+    - ROS2
   tools:
     - Docker
     - Git
