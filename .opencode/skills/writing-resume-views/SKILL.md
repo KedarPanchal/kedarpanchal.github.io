@@ -1,6 +1,6 @@
 ---
 name: writing-resume-views
-description: Use when creating or editing a tailored resume view YAML file for this repo (files like resume.view.yaml or *.view.yaml passed to `uv run render -r`). Covers the include/exclude filter DSL that selects fields from data.yaml, its ordering rules, and the integer-vs-string indexing constraint.
+description: Use when creating a tailored resume view YAML file for this repo from a job description link (files in tailored-resumes/*.view.yaml passed to `uv run render -r`). Covers fetching and parsing the job posting with webfetch, then using the include/exclude filter DSL to select fields from data.yaml, its ordering rules, and the integer-vs-string indexing constraint.
 ---
 
 # Writing resume view YAML files
@@ -10,16 +10,29 @@ and, for each, selects or trims what gets rendered. The resume renderer only
 reads from `data.yaml` through the view you pass with `-r`
 (default `resume.view.yaml`).
 
+Tailoring starts from a job description. If the user gives a link, `webfetch`
+it, extract the requirements, then encode the matching as a new view — never by
+changing `data.yaml`.
+
 ## Workflow for tailoring a resume
 
-1. **Never edit `data.yaml`.** It is the single source of truth for all
+1. **Fetch and parse the job description.** If the user provides a link to the
+   posting, call `webfetch` on it to get the text. Extract the role title,
+   required/preferred skills, technologies, and keywords. If `webfetch` fails
+   or returns a login wall, ask the user to paste the description. If the user
+   pastes text directly, use it as-is.
+2. **Never edit `data.yaml`.** It is the single source of truth for all
    content. Tailoring is done purely by creating new view files that filter it.
    Do not add, remove, or reword anything in `data.yaml`.
-2. **Create a new view file in `tailored-resumes/`.** Copy `resume.view.yaml`
-   as a starting point, give it a descriptive name
+3. **Map the job requirements onto `data.yaml`.** Read `data.yaml` and pick the
+   experience entries, projects, skills, and certifications that best match the
+   extracted keywords. Note their list indices — the view selects by index, not
+   by name.
+4. **Create a new view file in `tailored-resumes/`.** Copy `resume.view.yaml`
+   as a starting point, give it a descriptive name derived from the role/company
    (e.g. `tailored-resumes/acme-backend.view.yaml`), and adjust the
    include/exclude lists. Create the folder if it does not exist.
-3. **Build the resume by invoking `uv`:**
+5. **Build the resume by invoking `uv`:**
 
    ```
    mkdir -p dist/resume dist/site
@@ -28,6 +41,10 @@ reads from `data.yaml` through the view you pass with `-r`
 
    This writes `dist/resume/resume.tex`. Produce the PDF with
    `scripts/render_resume.sh` if needed.
+
+Tailoring is filter-only: a view can reorder list sections and pick skills, but
+it cannot reword bullets. If the job needs phrasing the source lacks, say so
+instead of editing `data.yaml`.
 
 ## The source shape (`data.yaml`)
 
@@ -48,7 +65,8 @@ resume needs.
 
 ## Filter DSL (implemented in `yaml_parser.py`)
 
-Each top-level key maps to either nothing (keep whole field) or an object with
+Translate what you extracted from the job description into filters. Each
+top-level key maps to either nothing (keep whole field) or an object with
 `include` and/or `exclude`.
 
 ```yaml
@@ -104,6 +122,10 @@ certifications:
   `exclude: all` drops it entirely (yields null).
 - A missing string key in `include` raises; a missing top-level key just
   yields null and is skipped. Keep required resume keys present.
+- **Tailor across every section, not just skills.** Match the job description's
+  keywords to `experience`, `projects`, `skills`, and `certifications`; keep
+  the strongest entries near the top via index order. Don't mirror keyword
+  lists so literally that relevant context is dropped.
 - Top-level view values must be either null or a mapping — not a scalar/list
   directly (`"Top-level values in the view file must be fields."`).
 
@@ -115,3 +137,8 @@ List indices are positions in `data.yaml`, so confirm them against the current
 `dist/resume/resume.tex`; the INFO log prints the filtered `SimpleNamespace`
 so you can confirm what survived the filter. Build the PDF with
 `scripts/render_resume.sh`.
+
+Before finishing, cross-check the rendered view against the parsed job
+description: the strongest matching experience/projects should be present and
+included skills should cover the technologies the posting names. Re-fetch with
+`webfetch` only if the posting changed or you need to confirm a keyword.
