@@ -101,6 +101,7 @@ certifications:
     - 2
     - 3
     - 4
+    - -1              # negative indices count from the end (last cert)
 ```
 
 ### Rules that are easy to get wrong
@@ -112,6 +113,14 @@ certifications:
 - **`include` ordering is preserved.** For list sections (`experience`,
   `projects`, `certifications`) the output order follows the index order you
   write, not the order in `data.yaml`. Reorder entries by reordering indices.
+- **Negative indices are allowed and count from the end of the list.** `-1` is
+  the last element, `-2` the penultimate, and so on. They can be mixed with
+  non-negative indices (e.g. `[0, 1, -1]`), and the ordering rule above still
+  applies: output follows the order you write. They work the same way in
+  integer `exclude` lists, where the index is resolved to the value at that
+  position (so `exclude: [-1]` drops the last element). Handy for pinning the
+  most recent entry without counting the list, but fragile if `data.yaml`
+  changes — re-check them before finishing.
 - **`exclude` removes by value for lists, by key for dicts.** Integer excludes
   on a list are resolved to the value at that index, then that value is
   filtered out.
@@ -132,8 +141,8 @@ certifications:
 ## Verify
 
 List indices are positions in `data.yaml`, so confirm them against the current
-`data.yaml` (read it, don't edit it). Run
-`uv run render -m r -r tailored-resumes/<view>` and inspect
+`data.yaml` (read it, don't edit it). 
+Run `uv run render -m r -r tailored-resumes/<view>` and inspect
 `dist/resume/resume.tex`; the INFO log prints the filtered `SimpleNamespace`
 so you can confirm what survived the filter. Build the PDF with
 `scripts/render_resume.sh`.
