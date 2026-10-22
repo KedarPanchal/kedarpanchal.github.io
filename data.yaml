@@ -86,7 +86,7 @@ experience:
     start: June 2024
     end: July 2024
     bullets:
-      - Trained reinforcement learning policies for award-winning BaRiFlex robotic gripper to perform range of dexterous manipulation tasks.
+      - Trained reinforcement learning policies for award-winning BaRiFlex robotic gripper to perform dexterous manipulation tasks.
       - Built Python data pipelines converting ROS sensor recordings into HDF5 datasets for model training.
       - Containerized Linux-only ROS toolchain with Docker for cross-platform development.
       - Constructed the 3-D printed robot apparatus used in experiments.
