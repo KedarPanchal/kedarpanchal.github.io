@@ -65,13 +65,15 @@ class YamlParser:
             elif isinstance(result, list):
                 result = [item for item in result if item not in exclude_set]
 
+        return result
+
     def _load_helper(self, source: dict, key: str, value: dict | None) -> dict | list | str | None:
         # If empty dict is passed, assume everything should be returned
         if value is None:
             return source[key] if key in source else None
         
         result = self._include(source, key, value)
-        self._exclude(source, key, value, result) 
+        result = self._exclude(source, key, value, result) 
         return result if result else None
     
     def _to_object(self, data: dict) -> SimpleNamespace:
