@@ -110,9 +110,9 @@ class LatexRenderer(Renderer):
             f.write(self._preamble())
             f.write(self._info(src))
             f.write(self._education(src))
-            f.write(self._skills_certifications(src))
             f.write(self._experience(src))
             f.write(self._projects(src))
+            f.write(self._skills_certifications(src))
             f.write(r"\end{document}")
 
 

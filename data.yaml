@@ -47,19 +47,20 @@ experience:
     end: August 2026
     bullets:
       - Designed a locally deployed agentic system that translates legacy C to Rust, eliminating memory vulnerabilities in-house.
-      - Built a 7-stage agentic loop (translate, evaluate, generate tests, execute) that reduced mistranslations on repositories of 2000+ LOC.
+      - Built a 7-stage agentic loop (translate, evaluate, generate tests, execute) that reduced errors on repositories of 2000+ LOC.
+      - Increased model output speed by 10x by using speculative decoding, caching repeated results, and fine-tuning hyperparameters.
       - Designed GitLab CI/CD pipelines to automate documentation generation, code linting, and deployment.
       - Cut deployment time by 92% by creating Ansible playbook configuring a multi-container Podman application.
-      - Presented progress in 3 demonstrations to executives and senior leadership, contributing to planned adoption in client-facing projects.
+      - Presented 3 demonstrations to executives and senior leadership, contributing to planned adoption in client-facing projects.
   - title: Research Assistant, Department of Computer Science
     company: Texas A&M University
     location: College Station, TX
     start: January 2026
     end: Present
     bullets:
-      - Designed and analyzed coverage algorithms for blind robots with limited sensing capabilities in polygonal environments with obstacles.
+      - Designed and analyzed coverage algorithms for robots with limited sensing capabilities in polygonal environments with obstacles.
       - Built a C++/CGAL simulation environment with exact polygon arithmetic to validate algorithm correctness and coverage.
-      - Reduced peak memory use by 90% and runtime by 85% by diagnosing redundant geometric computations and caching repeated results.
+      - Reduced peak memory use by 90% and runtime by 85% by diagnosing redundant computations and caching repeated results.
       - Debugged heap-use-after-free errors and geometric inconsistencies using LLDB and AddressSanitizer.
   - title: AI Engineer
     company: Firelight Innovations
@@ -67,8 +68,8 @@ experience:
     start: September 2025
     end: January 2026
     bullets:
-      - Integrated Recall.ai to stream live meeting audio into real-time transcription pipeline that handled partial transcripts and speaker diarization.
-      - Designed LangChain pipeline that transformed meeting transcripts into structured data and generated websites live during client calls.
+      - Integrated Recall.ai to stream live meeting audio into real-time transcription pipeline.
+      - Designed LangChain agent that transformed transcripts into structured data and generated websites live during client calls.
       - Pitched the product at 2 competitions, presenting technical features and live demo to judges and investors.
   - title: Automation Developer
     company: MathNMore LLC
@@ -77,7 +78,7 @@ experience:
     end: July 2025
     bullets:
       - Reduced loan payment notification time by 97.5% (2 hours to 3 minutes each month) by developing JavaScript automation that generates and issues late notices for 20+ loans.
-      - Tracked insurance payments for 20+ properties, integrating with existing spreadsheets for accessibility for non-technical employees.
+      - Tracked insurance bills for 20+ properties, integrating with existing spreadsheets for accessibility for non-technical employees.
       - Maintained both automations for three years, updating scripts to accommodate changes in property acquisition and loan policies.
   - title: Summer Robotics Research Intern, RobIn Lab
     company: University of Texas at Austin
@@ -96,8 +97,9 @@ projects:
     end: Present
     url: https://github.com/turtle-robotics/SWRM-Monorepo
     bullets:
-      - Implement Olfati-Saber flocking control in C++ for swarm of 20+ robots.
-      - Designed ROS2 and Gazebo simulation environment modeling flocking dynamics to validate swarm algorithms before hardware deployment.
+      - Implement Olfati-Saber flocking control algorithm in C++ for swarm of 20+ robots.
+      - Develop thread-safe data structures to eliminate memory leaks and data races using shared mutexes and smart pointers.
+      - Design ROS2 and Gazebo simulation environment modeling flocking dynamics to validate swarm algorithms before deployment.
   - title: IMC Prosperity 4
     start: April 2026
     end: May 2026
@@ -119,7 +121,7 @@ projects:
     end: December 2025
     url: https://github.com/CSCE-120-Honors-Project/Hello-World-from-Scratch
     bullets:
-      - Co-developed bare-metal bootloader for ARM Cortex-A53 in C and assembly that loads and executes a program from disk, with no OS or standard library.
+      - Co-developed bare-metal bootloader for ARM Cortex-A53 in C and assembly that loads and executes a program from disk, with no OS, standard library, or device drivers.
       - Implemented the FAT32 filesystem driver from scratch, enabling the bootloader to read files from a virtual disk under QEMU.
       - Wrote linker scripts defining the memory layout for bootloader and loaded program.
   - title: GIMP AI Inpainter
@@ -144,7 +146,7 @@ skills:
     - FastAPI
     - LangGraph
     - Next.js
-    - React
+    - React.js
     - ROS2
   tools:
     - Docker

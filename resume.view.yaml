@@ -15,17 +15,17 @@ education:
           - 1
           - 2
           - 3
-          - 4
 
 experience:
   include:
-    - 0
     - 1
     - 2
     - 3
+    - 4
 
 projects:
   include:
+    - 0
     - 1
     - 3
 
