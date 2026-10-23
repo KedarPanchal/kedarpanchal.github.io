@@ -1,4 +1,5 @@
 from . import yaml_parser
+from . import parser
 from .latex_renderer import LatexRenderer
 from .jekyll_renderer import JekyllRenderer
 
@@ -13,26 +14,28 @@ arg_parser.add_argument("--mode", "-m", type=str, choices=['r', 's', "rs", "sr"]
 args = arg_parser.parse_args()
 
 def main() -> None:
+    p = parser.YAMLParser("data.yaml")
+    print(p._data_tree)
 
-    logging.basicConfig(level=logging.INFO)
-    parser = yaml_parser.YamlParser("data.yaml")
-    
-    if 'r' in args.mode:
-        logger.info("Starting resume rendering process...")
-        resume_data = parser.load(args.resume_view)
-        logger.info(resume_data)
-        latex_renderer = LatexRenderer("dist/resume/resume.tex")
-        latex_renderer.render(resume_data)
-        logger.info("Resume rendering process completed successfully.")
-    else:
-        logger.info("Skipping resume rendering process.")
+    # logging.basicConfig(level=logging.INFO)
+    # parser = yaml_parser.YamlParser("data.yaml")
+    # 
+    # if 'r' in args.mode:
+    #     logger.info("Starting resume rendering process...")
+    #     resume_data = parser.load(args.resume_view)
+    #     logger.info(resume_data)
+    #     latex_renderer = LatexRenderer("dist/resume/resume.tex")
+    #     latex_renderer.render(resume_data)
+    #     logger.info("Resume rendering process completed successfully.")
+    # else:
+    #     logger.info("Skipping resume rendering process.")
 
-    if 's' in args.mode:
-        logger.info("Starting Jekyll site render process...")
-        jekyll_data = parser.load("site.view.yaml")
-        logger.info(jekyll_data)
-        jekyll_renderer = JekyllRenderer("dist/site")
-        jekyll_renderer.render(jekyll_data)
-        logger.info("Jekyll site render process completed successfully.")
-    else:
-        logger.info("Skipping Jekyll site rendering process")
+    # if 's' in args.mode:
+    #     logger.info("Starting Jekyll site render process...")
+    #     jekyll_data = parser.load("site.view.yaml")
+    #     logger.info(jekyll_data)
+    #     jekyll_renderer = JekyllRenderer("dist/site")
+    #     jekyll_renderer.render(jekyll_data)
+    #     logger.info("Jekyll site render process completed successfully.")
+    # else:
+    #     logger.info("Skipping Jekyll site rendering process")
