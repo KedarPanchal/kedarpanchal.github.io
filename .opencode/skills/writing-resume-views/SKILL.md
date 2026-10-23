@@ -18,9 +18,10 @@ changing `data.yaml`.
 
 1. **Fetch and parse the job description.** If the user provides a link to the
    posting, call `webfetch` on it to get the text. Extract the role title,
-   required/preferred skills, technologies, and keywords. If `webfetch` fails
-   or returns a login wall, ask the user to paste the description. If the user
-   pastes text directly, use it as-is.
+   required/preferred skills, technologies, and keywords. If webfetch fails, 
+   only then should you invoke the `tavily` tool. If `tavily` fails or returns 
+   a login wall, ask the user to paste the description. If the user pastes text 
+   directly, use it as-is.
 2. **Never edit `data.yaml`.** It is the single source of truth for all
    content. Tailoring is done purely by creating new view files that filter it.
    Do not add, remove, or reword anything in `data.yaml`.
@@ -41,6 +42,8 @@ changing `data.yaml`.
 
    This writes `dist/resume/resume.tex`. Produce the PDF with
    `scripts/render_resume.sh` if needed.
+6. Move the generated resume PDF in dist/resume/resume.pdf to the tailored-resumes folder and rename it to match the view file (e.g.
+   `tailored-resumes/acme-backend.pdf`).
 
 Tailoring is filter-only: a view can reorder list sections and pick skills, but
 it cannot reword bullets. If the job needs phrasing the source lacks, say so
