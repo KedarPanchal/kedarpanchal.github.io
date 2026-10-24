@@ -15,7 +15,8 @@ args = arg_parser.parse_args()
 
 def main() -> None:
     p = parser.YAMLParser("data.yaml")
-    print(p._data_tree)
+    view = p.parse_view("resume.view.yaml")
+    print(view)
 
     # logging.basicConfig(level=logging.INFO)
     # parser = yaml_parser.YamlParser("data.yaml")
