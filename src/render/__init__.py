@@ -14,29 +14,39 @@ arg_parser.add_argument("--mode", "-m", type=str, choices=['r', 's', "rs", "sr"]
 args = arg_parser.parse_args()
 
 def main() -> None:
+    logging.basicConfig(level=logging.INFO)
     p = parser.YAMLParser("data.yaml")
-    view = p.parse_view("resume.view.yaml")
-    print(view)
+    
+    if 'r' in args.mode:
+        logger.info("Starting resume rendering process...")
+        resume_data = p.parse_view(args.resume_view)
 
-    # logging.basicConfig(level=logging.INFO)
-    # parser = yaml_parser.YamlParser("data.yaml")
-    # 
-    # if 'r' in args.mode:
-    #     logger.info("Starting resume rendering process...")
-    #     resume_data = parser.load(args.resume_view)
-    #     logger.info(resume_data)
-    #     latex_renderer = LatexRenderer("dist/resume/resume.tex")
-    #     latex_renderer.render(resume_data)
-    #     logger.info("Resume rendering process completed successfully.")
-    # else:
-    #     logger.info("Skipping resume rendering process.")
+        logger.info(resume_data)
+        latex_renderer = LatexRenderer("dist/resume/resume.tex")
 
-    # if 's' in args.mode:
-    #     logger.info("Starting Jekyll site render process...")
-    #     jekyll_data = parser.load("site.view.yaml")
-    #     logger.info(jekyll_data)
-    #     jekyll_renderer = JekyllRenderer("dist/site")
-    #     jekyll_renderer.render(jekyll_data)
-    #     logger.info("Jekyll site render process completed successfully.")
-    # else:
-    #     logger.info("Skipping Jekyll site rendering process")
+        resume_namespace = resume_data.to_namespace()
+        if not isinstance(resume_namespace, parser.SimpleNamespace):
+            logger.error("Parsed resume data is not a SimpleNamespace. Cannot render resume.")
+            return
+
+        latex_renderer.render(resume_namespace)
+        logger.info("Resume rendering process completed successfully.")
+    else:
+        logger.info("Skipping resume rendering process.")
+
+    if 's' in args.mode:
+        logger.info("Starting Jekyll site render process...")
+        jekyll_data = p.parse_view("site.view.yaml")
+
+        logger.info(jekyll_data)
+        jekyll_renderer = JekyllRenderer("dist/site")
+        
+        jekyll_namespace = jekyll_data.to_namespace()
+        if not isinstance(jekyll_namespace, parser.SimpleNamespace):
+            logger.error("Parsed Jekyll site data is not a SimpleNamespace. Cannot render site.")
+            return
+
+        jekyll_renderer.render(jekyll_namespace)
+        logger.info("Jekyll site render process completed successfully.")
+    else:
+        logger.info("Skipping Jekyll site rendering process")

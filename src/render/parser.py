@@ -1,5 +1,6 @@
 import yaml
-from typing import Optional, Self
+from typing import Any, Optional, Self
+from types import SimpleNamespace
 
 
 class DataTree:
@@ -60,19 +61,39 @@ class DataTree:
     def children(self) -> list[Self]:
         return self._children
 
+    def num_children(self) -> int:
+        return len(self._children)
+
+    def value(self) -> Optional[str]:
+        return self._value
+
     def copy(self) -> Self:
         result = DataTree(self._value)
         for i, child in enumerate(self._children):
-            result.add_child(self.get_key_by_index(i), child.copy())
+            result.emplace_child(self.get_key_by_index(i), child.copy())
         return result  # type: ignore
+    
+    def to_namespace(self) -> Optional[str] | list[str] | SimpleNamespace:
+        # No children means this is a leaf node, so we return the value directly
+        if not self._children:
+            return self._value
+        
+        # If all keys are None, then this node was a list in the data YAML
+        if all(key is None for key in self._keys):
+            return [child.to_namespace() for child in self._children]
 
+        return SimpleNamespace(**{
+            key.replace("-", "_"): child.to_namespace()
+            for key, child in zip(self._keys, self._children)
+            if key is not None
+        })
 
     def _pretty_print(self, depth: int):
         result = f"{'\t' * depth}{self._value}\n"
         for c in self._children:
             result += c._pretty_print(depth + 1)
         return result
-    
+
     def __str__(self):
         return self._pretty_print(0)
 
