@@ -1,4 +1,3 @@
-from . import yaml_parser
 from . import parser
 from .latex_renderer import LatexRenderer
 from .jekyll_renderer import JekyllRenderer
