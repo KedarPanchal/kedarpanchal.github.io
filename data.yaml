@@ -136,6 +136,7 @@ skills:
   languages:
     - Python
     - C/C++
+    - Go
     - TypeScript/JavaScript
     - Java
     - SQL

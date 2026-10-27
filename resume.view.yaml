@@ -34,7 +34,7 @@ skills:
   include:
     - languages:
         exclude:
-          - 7
+          - 8
     - frameworks
     - tools
 
