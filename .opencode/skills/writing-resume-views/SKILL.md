@@ -40,8 +40,7 @@ changing `data.yaml`.
    uv run render -m r -r tailored-resumes/acme-backend.view.yaml
    ```
 
-   This writes `dist/resume/resume.tex`. Produce the PDF with
-   `scripts/render_resume.sh` if needed.
+   This writes `dist/resume/resume.tex`. Compile the LaTeX to PDF with `pdflatex`.
 6. Move the generated resume PDF in dist/resume/resume.pdf to the tailored-resumes folder and rename it to match the view file (e.g.
    `tailored-resumes/acme-backend.pdf`).
 
