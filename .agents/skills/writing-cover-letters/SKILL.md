@@ -70,6 +70,13 @@ and a PDF with the same base name in `cover-letters/`.
      experience. Company research should add one or two concrete, relevant
      details — not generic flattery.
 
+6. **Humanize and revise the cover letter.** Use your humanizer skill if 
+    available to make the letter sound natural and professional. Avoid generic 
+    phrases, buzzwords, or overly formal language. Make the tone engaging, 
+    personable, and enthusiastic. Avoid too many concessions of humility; 
+    instead, focus on the candidate's strengths and how they align with the 
+    company's needs. 
+
 5. **Generate the PDF with the `pdf-handling` skill.** Load and follow the
    `pdf-handling` skill's creation workflow to convert the markdown to PDF.
    The output must use the same base name and folder as the markdown:
