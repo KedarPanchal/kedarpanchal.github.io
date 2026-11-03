@@ -126,6 +126,7 @@ class LatexRenderer(Renderer):
             r"\item \textbf{Programming Languages:} " + ', '.join(escape_latex(language) for language in src.skills.languages),
             r"\item \textbf{Frameworks:} " + ', '.join(escape_latex(framework) for framework in src.skills.frameworks),
             r"\item \textbf{Tools:} " + ', '.join(escape_latex(tool) for tool in src.skills.tools),
+            r"\item \textbf{AI Tools:} " + ', '.join(escape_latex(ai_tool) for ai_tool in src.skills.ai_tools),
             r"\item \textbf{Certifications:} " + ', '.join(escape_latex(certification) for certification in src.certifications),
             r"\end{itemize}"
         ]

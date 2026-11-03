@@ -90,7 +90,7 @@ order: {self._order_index}
                     *[f"- {item}" for item in items],
                     "{% endcapture %}",
                     "{% include dropdown-list.html " 
-                      + f"title='{category.title()}' " 
+                      + f"title='{category.replace("_", " ").title()}' " 
                       + f"content={category}_list "
                       + f"short=true"
                       + " %}"

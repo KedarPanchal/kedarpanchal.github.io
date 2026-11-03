@@ -160,6 +160,14 @@ skills:
     - Maven
     - CMake
     - Redis
+  ai_tools:
+    - Claude
+    - GitHub Copilot
+    - OpenCode
+    - llama.cpp
+    - Perplexity
+    - Freebuff
+    - Tavily MCP
 
 certifications:
   - Get Started with Redis
