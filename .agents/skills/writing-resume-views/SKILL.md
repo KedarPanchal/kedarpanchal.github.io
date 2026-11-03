@@ -122,14 +122,15 @@ must keep all of them. Dropping a top-level key or a field inside one raises
 | `education` | mapping | `university`, `degree`, `location`, `start`, `end`, `gpa`, `courses` (list of strings) |
 | `experience` | list of mappings | `title`, `company`, `location`, `start`, `end`, `bullets` (list of strings) |
 | `projects` | list of mappings | `title`, `start`, `end`, `url`, `bullets` (list) |
-| `skills` | mapping | `languages`, `frameworks`, `tools` (each a list of strings) |
+| `skills` | mapping | `languages`, `frameworks`, `tools`, `ai_tools` (each a list of strings) |
 | `certifications` | list of strings | — |
 
 Notes:
 
 - `projects.url` is not printed on the resume; the site renderer uses it.
-- `skills` is hardcoded to `languages`, `frameworks`, and `tools` by the
-  renderer. A new category renders on the site but not on the resume.
+- `skills` is hardcoded to `languages`, `frameworks`, `tools`, and
+  `ai_tools` by the renderer. A new category renders on the site but not on
+  the resume.
 - Hyphenated keys become underscores in the renderer (`hugging-face` is read
   as `hugging_face`), so keep the hyphen in `data.yaml`.
 - LaTeX special characters are escaped for you, so `&`, `%`, `_`, and similar
@@ -167,6 +168,8 @@ skills:
         exclude: [8]      # languages[8], by position
     - frameworks
     - tools
+    - ai_tools:
+        include: [0, 1, 2]  # ai_tools[0..2], by position
 
 # Pick list entries; -1 counts from the end.
 certifications:
