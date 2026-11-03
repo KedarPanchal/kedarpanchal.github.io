@@ -65,7 +65,7 @@ Omitting a required key from a resume view will crash the LaTeX renderer with
 an `AttributeError`. Only trim *within* a section, don't drop whole sections a
 resume needs.
 
-## Filter DSL (implemented in `yaml_parser.py`)
+## Filter DSL (implemented in `src/render/parser.py`)
 
 Translate what you extracted from the job description into filters. Each
 top-level key maps to either nothing (keep whole field) or an object with
@@ -80,9 +80,9 @@ education:
   include:            # keep only these sub-keys...
     - university
     - degree
-    - courses:        # ...and recurse: nested include/exclude on courses[]
+    - courses:        # ...and recurse: nested filter on the courses list
         exclude:
-          - Programming Languages   # drop these list ITEMS by value
+          - 7             # courses is a LIST: exclude by index, not by value
 
 experience:
   include:            # LIST indices — keeps entries 0,1,2 in this order
@@ -94,7 +94,7 @@ skills:
   include:
     - languages:
         exclude:
-          - Haskell   # drop a value from the languages[] list
+          - 8         # drop an item from the languages[] list by its index
     - frameworks
     - tools
 
@@ -108,37 +108,39 @@ certifications:
 
 ### Rules that are easy to get wrong
 
-- **Never mix integer indices and string keys under one `include`.** A list of
-  ints indexes into a source list (result is a list); a list of strings/dicts
-  selects dict keys (result is a dict). Mixing raises
-  `"Cannot mix indexing and non-indexing snapshots"`.
+- **Integers index into lists; strings select object keys.** Check the source
+  shape first: `experience`, `projects`, and `certifications` are lists (select
+  by index); `education`, `skills`, `info`, and `name` are mappings or scalars
+  (select by field name).
+- **Never mix integer indices and string keys under one `include`.** The
+  string-keyed entries survive and the indexed ones are silently dropped, so
+  the section comes out missing everything you picked by position.
 - **`include` ordering is preserved.** For list sections (`experience`,
   `projects`, `certifications`) the output order follows the index order you
   write, not the order in `data.yaml`. Reorder entries by reordering indices.
-- **Negative indices are allowed and count from the end of the list.** `-1` is
-  the last element, `-2` the penultimate, and so on. They can be mixed with
-  non-negative indices (e.g. `[0, 1, -1]`), and the ordering rule above still
-  applies: output follows the order you write. They work the same way in
-  integer `exclude` lists, where the index is resolved to the value at that
-  position (so `exclude: [-1]` drops the last element). Handy for pinning the
-  most recent entry without counting the list, but fragile if `data.yaml`
-  changes — re-check them before finishing.
-- **`exclude` removes by value for lists, by key for dicts.** Integer excludes
-  on a list are resolved to the value at that index, then that value is
-  filtered out.
+- **Negative indices are allowed in `include` and count from the end.** `-1` is
+  the last element, `-2` the penultimate, and they can be mixed with
+  non-negative indices (e.g. `[0, 1, -1]`); the ordering rule above still
+  applies. Handy for pinning the most recent entry without counting the list,
+  but fragile if `data.yaml` changes — re-check them before finishing.
+- **`exclude` takes indices for lists and key names for objects.** A string in
+  `exclude` is looked up as a *key*, so naming a list item's value (e.g.
+  `- Haskell` under a list) does nothing. Use non-negative integer indices on
+  lists; a negative index in `exclude` is silently ignored.
 - **Nested filtering** uses a one-key mapping inside the `include` list, e.g.
-  `- courses: { exclude: [...] }`. The key must exist in the source or it
-  raises `"Item '<x>' not found"`.
-- `include: all` (or omitting `include`) keeps the whole field;
-  `exclude: all` drops it entirely (yields null).
-- A missing string key in `include` raises; a missing top-level key just
-  yields null and is skipped. Keep required resume keys present.
+  `- courses: { include: [...] }` or `- courses: { exclude: [...] }`. The key
+  must exist in the source or it raises `KeyError: "<key> is an invalid key"`.
+- **Omitting `include`, or `include: all`, keeps the whole field.** There is no
+  `exclude: all` — it is ignored rather than dropping the field.
+- **A missing key raises `KeyError`**, both for a field named inside `include`
+  and for a top-level key that isn't in `data.yaml`. Keep required resume keys
+  present.
 - **Tailor across every section, not just skills.** Match the job description's
   keywords to `experience`, `projects`, `skills`, and `certifications`; keep
   the strongest entries near the top via index order. Don't mirror keyword
   lists so literally that relevant context is dropped.
-- Top-level view values must be either null or a mapping — not a scalar/list
-  directly (`"Top-level values in the view file must be fields."`).
+- **Top-level view values must be null or a mapping.** A scalar such as
+  `name: 5` raises `TypeError`.
 
 ## Verify
 
