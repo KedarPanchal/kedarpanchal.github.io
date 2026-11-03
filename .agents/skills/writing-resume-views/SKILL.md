@@ -1,163 +1,241 @@
 ---
 name: writing-resume-views
-description: Use when creating a tailored resume view YAML file for this repo from a job description link (files in tailored-resumes/*.view.yaml passed to `uv run render -r`). Covers fetching and parsing the job posting with webfetch, then using the include/exclude filter DSL to select fields from data.yaml, its ordering rules, and the integer-vs-string indexing constraint.
+description: Use when tailoring the resume to a job posting by writing a view YAML file in tailored-resumes/ and rendering it with `uv run render -m r -r <view>`. Covers fetching the posting, mapping it onto data.yaml indices, the include/exclude filter DSL, the PDF build, and the Drive upload.
 ---
 
-# Writing resume view YAML files
+# Writing resume view files
 
-A view file is a **filter**, not data. It names top-level keys from `data.yaml`
-and, for each, selects or trims what gets rendered. The resume renderer only
-reads from `data.yaml` through the view you pass with `-r`
-(default `resume.view.yaml`).
+A view file is a **filter, not data**. It names top-level keys from `data.yaml`
+and selects or trims what the resume renderer prints. Tailoring a resume means
+writing a new view file; it never means editing `data.yaml`.
 
-Tailoring starts from a job description. If the user gives a link, `webfetch`
-it, extract the requirements, then encode the matching as a new view — never by
-changing `data.yaml`.
+## When to use
 
-## Workflow for tailoring a resume
+- The user asks for a resume tailored to a specific job posting, company, or
+  role.
+- The user wants an existing tailored resume rebuilt or trimmed.
+- The user asks which `data.yaml` entries to show for a role.
 
-1. **Fetch and parse the job description.** If the user provides a link to the
-   posting, call `webfetch` on it to get the text. Extract the role title,
-   required/preferred skills, technologies, and keywords. If webfetch fails, 
-   only then should you invoke the `tavily` tool. If `tavily` fails or returns 
-   a login wall, ask the user to paste the description. If the user pastes text 
-   directly, use it as-is.
-2. **Never edit `data.yaml`.** It is the single source of truth for all
-   content. Tailoring is done purely by creating new view files that filter it.
-   Do not add, remove, or reword anything in `data.yaml`.
-3. **Map the job requirements onto `data.yaml`.** Read `data.yaml` and pick the
-   experience entries, projects, skills, and certifications that best match the
-   extracted keywords. Note their list indices — the view selects by index, not
-   by name.
-4. **Create a new view file in `tailored-resumes/`.** Copy `resume.view.yaml`
-   as a starting point, give it a descriptive name derived from the role/company
-   (e.g. `tailored-resumes/acme-backend.view.yaml`), and adjust the
-   include/exclude lists. Create the folder if it does not exist.
-5. **Build the resume by invoking `uv`:**
+Do not use this skill to change resume wording or add content. A view can
+select, trim, and reorder, but it cannot rewrite text. If the posting needs
+phrasing that `data.yaml` does not have, tell the user instead of editing the
+source.
 
+## Inputs
+
+- The job posting: a URL, or text the user pasted.
+- Optionally, the exact company and role title, if the posting does not make
+  them obvious.
+
+## Outputs
+
+- `tailored-resumes/<company>_<role>.view.yaml` — the filter.
+- `tailored-resumes/<company>_<role>.pdf` — the rendered resume.
+- The PDF uploaded to the Google Drive folder configured for resumes, with its
+  link copied to the clipboard.
+
+Use a lowercase snake_case slug for the company and the role, for example
+`tailored-resumes/acme_backend_engineer.view.yaml` and
+`tailored-resumes/acme_backend_engineer.pdf`.
+
+## Workflow
+
+1. **Fetch the posting.** If the user gave a URL, fetch it with your
+   URL-reading tool (`webfetch`; `read_url` where that is the tool exposed).
+   If the user pasted the description, use it as-is. If the fetch fails, is
+   behind a login wall, or returns boilerplate, ask the user to paste the text
+   rather than guessing.
+
+2. **Extract the requirements.** Record the role title, company, location,
+   responsibilities, required and preferred qualifications, technologies, and
+   any repeated keywords. Keep these notes for the mapping step and for the
+   final review.
+
+3. **Read `data.yaml`.** It is the single source of truth for all content.
+   Read it fresh every time: indices are positions, so any edit shifts them.
+   Do not add, remove, or reword anything in it.
+
+4. **Map requirements to entries.** Pick the `experience`, `projects`,
+   `skills`, and `certifications` entries that best match the posting. Note
+   their list indices, because list sections are selected by index, not by
+   name. Prefer the strongest evidence for the role over a literal keyword
+   match; keep enough entries that the resume still reads as a career, not a
+   keyword list.
+
+5. **Create the view file.** Start from `resume.view.yaml`, save it under the
+   output name above, and adjust the `include`/`exclude` lists. Keep every
+   top-level section (see [Reference: `data.yaml` shape](#reference-datayaml-shape));
+   trim within sections instead of dropping them.
+
+6. **Render the resume.**
+
+   ```sh
+   mkdir -p dist/resume
+   uv run render -m r -r tailored-resumes/acme_backend_engineer.view.yaml
    ```
-   mkdir -p dist/resume dist/site
-   uv run render -m r -r tailored-resumes/acme-backend.view.yaml
+
+   This writes `dist/resume/resume.tex`. Do not use
+   `scripts/render_resume.sh` for a tailored view: that script hardcodes the
+   default `resume.view.yaml` and accepts no `-r` argument.
+
+7. **Compile the PDF.**
+
+   ```sh
+   cd dist/resume && pdflatex -interaction=nonstopmode resume.tex
    ```
 
-   This writes `dist/resume/resume.tex`. Compile the LaTeX to PDF with `pdflatex`.
-6. Move the generated resume PDF in dist/resume/resume.pdf to the 
-   `tailored-resumes` folder and rename it to match the view file (e.g.
-   `tailored-resumes/acme-backend.pdf`).
-7. Upload the named and moved PDF to Google Drive using your `google-docs-skill`. 
-   The folder ID can be found in the `resume_folder_id` key in `configs/gsuite.jsonc` 
-   at the top-level of this repository. After the upload, pipe the 
-   `web_view_link` returned by the command JSON to `pbcopy` to copy it to the 
-   clipboard.
+   Check the exit status and the `Output written on resume.pdf (...)` line.
+   Then move the result next to its view file:
 
-Tailoring is filter-only: a view can reorder list sections and pick skills, but
-it cannot reword bullets. If the job needs phrasing the source lacks, say so
-instead of editing `data.yaml`.
+   ```sh
+   mv dist/resume/resume.pdf tailored-resumes/acme_backend_engineer.pdf
+   ```
 
-## The source shape (`data.yaml`)
+8. **Upload the PDF.** Use the `google-docs` skill's `drive_manager.rb`:
 
-Top-level keys the resume renderer *requires* (see `latex_renderer.py` — it
-unconditionally reads all of these, so a resume view must keep them all):
+   ```sh
+   ruby <google-docs-skill>/scripts/drive_manager.rb upload \
+     --file tailored-resumes/acme_backend_engineer.pdf \
+     --folder-id <resume_folder_id>
+   ```
 
-- `name` — string
-- `info` — object: `email, phone, website, github, hugging-face, linkedin, miscellaneous[]`
-- `education` — object: `university, degree, location, start, end, gpa, courses[]`
-- `experience` — **list** of objects: `title, company, location, start, end, bullets[]`
-- `projects` — **list** of objects: `title, start, end, url, bullets[]`
-- `skills` — object: `languages[], frameworks[], tools[]`
-- `certifications` — **list** of strings
+   Resolve `<google-docs-skill>` against that skill's base directory (for
+   example `~/.agents/skills/google-docs`), not this repo. Read
+   `<resume_folder_id>` from the `resume_folder_id` key in
+   `configs/gsuite.jsonc`. That file is local: if it does not exist, copy
+   `configs/gsuite.example.jsonc` and ask the user for the folder ID. Never
+   invent an ID. The command prints JSON; copy the link with
+   `... | jq -r '.file.web_view_link' | pbcopy`, or print it when `pbcopy` is
+   unavailable. If the config or credentials are missing, skip the upload and
+   tell the user where the local PDF is.
 
-Omitting a required key from a resume view will crash the LaTeX renderer with
-an `AttributeError`. Only trim *within* a section, don't drop whole sections a
-resume needs.
+## Reference: `data.yaml` shape
 
-## Filter DSL (implemented in `src/render/parser.py`)
+The LaTeX renderer reads every field below unconditionally, so a resume view
+must keep all of them. Dropping a top-level key or a field inside one raises
+`AttributeError` during rendering.
 
-Translate what you extracted from the job description into filters. Each
-top-level key maps to either nothing (keep whole field) or an object with
-`include` and/or `exclude`.
+| Key | Shape | Fields |
+| --- | --- | --- |
+| `name` | string | — |
+| `info` | mapping | `email`, `phone`, `website`, `github`, `hugging-face`, `linkedin`, `miscellaneous` (list of strings) |
+| `education` | mapping | `university`, `degree`, `location`, `start`, `end`, `gpa`, `courses` (list of strings) |
+| `experience` | list of mappings | `title`, `company`, `location`, `start`, `end`, `bullets` (list of strings) |
+| `projects` | list of mappings | `title`, `start`, `end`, `url`, `bullets` (list) |
+| `skills` | mapping | `languages`, `frameworks`, `tools` (each a list of strings) |
+| `certifications` | list of strings | — |
+
+Notes:
+
+- `projects.url` is not printed on the resume; the site renderer uses it.
+- `skills` is hardcoded to `languages`, `frameworks`, and `tools` by the
+  renderer. A new category renders on the site but not on the resume.
+- Hyphenated keys become underscores in the renderer (`hugging-face` is read
+  as `hugging_face`), so keep the hyphen in `data.yaml`.
+- LaTeX special characters are escaped for you, so `&`, `%`, `_`, and similar
+  are safe in the data.
+
+## Reference: filter syntax
+
+Each top-level key maps to either nothing (keep the field whole) or an object
+with `include` and/or `exclude`. The excerpt below is syntax, not a complete
+view; a real view must keep every top-level section.
 
 ```yaml
-name:                 # bare key = include everything unchanged
+# Keep a field unchanged: a bare key with a null value.
+name:
 
-info:                 # same — null value means "keep all"
-
+# Trim a mapping by sub-key name, with a nested filter on a list of strings.
 education:
-  include:            # keep only these sub-keys...
+  include:
     - university
     - degree
-    - courses:        # ...and recurse: nested filter on the courses list
-        exclude:
-          - 7             # courses is a LIST: exclude by index, not by value
+    - courses:
+        include: [0, 1, 2, 3]
 
+# Select list entries by index; the order here is the output order.
 experience:
-  include:            # LIST indices — keeps entries 0,1,2 in this order
-    - 0
-    - 1
-    - 2
+  include: [1, 2]
 
+projects:
+  include: [1, 0]
+
+# Keep a mapping's sub-keys and drop one item from a list inside it.
 skills:
   include:
     - languages:
-        exclude:
-          - 8         # drop an item from the languages[] list by its index
+        exclude: [8]      # languages[8], by position
     - frameworks
     - tools
 
+# Pick list entries; -1 counts from the end.
 certifications:
-  include:            # pick specific certs by index
-    - 2
-    - 3
-    - 4
-    - -1              # negative indices count from the end (last cert)
+  include: [0, 2, -1]
 ```
 
-### Rules that are easy to get wrong
+## Reference: filter rules
 
-- **Integers index into lists; strings select object keys.** Check the source
-  shape first: `experience`, `projects`, and `certifications` are lists (select
-  by index); `education`, `skills`, `info`, and `name` are mappings or scalars
-  (select by field name).
-- **Never mix integer indices and string keys under one `include`.** The
-  string-keyed entries survive and the indexed ones are silently dropped, so
-  the section comes out missing everything you picked by position.
-- **`include` ordering is preserved.** For list sections (`experience`,
-  `projects`, `certifications`) the output order follows the index order you
-  write, not the order in `data.yaml`. Reorder entries by reordering indices.
-- **Negative indices are allowed in `include` and count from the end.** `-1` is
-  the last element, `-2` the penultimate, and they can be mixed with
-  non-negative indices (e.g. `[0, 1, -1]`); the ordering rule above still
-  applies. Handy for pinning the most recent entry without counting the list,
-  but fragile if `data.yaml` changes — re-check them before finishing.
-- **`exclude` takes indices for lists and key names for objects.** A string in
-  `exclude` is looked up as a *key*, so naming a list item's value (e.g.
-  `- Haskell` under a list) does nothing. Use non-negative integer indices on
-  lists; a negative index in `exclude` is silently ignored.
-- **Nested filtering** uses a one-key mapping inside the `include` list, e.g.
-  `- courses: { include: [...] }` or `- courses: { exclude: [...] }`. The key
-  must exist in the source or it raises `KeyError: "<key> is an invalid key"`.
-- **Omitting `include`, or `include: all`, keeps the whole field.** There is no
-  `exclude: all` — it is ignored rather than dropping the field.
-- **A missing key raises `KeyError`**, both for a field named inside `include`
-  and for a top-level key that isn't in `data.yaml`. Keep required resume keys
-  present.
-- **Tailor across every section, not just skills.** Match the job description's
-  keywords to `experience`, `projects`, `skills`, and `certifications`; keep
-  the strongest entries near the top via index order. Don't mirror keyword
-  lists so literally that relevant context is dropped.
-- **Top-level view values must be null or a mapping.** A scalar such as
-  `name: 5` raises `TypeError`.
+These describe what `src/render/parser.py` actually does.
+
+- **A key with a null value keeps the whole field.** Omitting `include` does
+  the same, and `include: all` is equivalent.
+- **Strings select mapping keys; integers select a 0-based child position.**
+  On a list, position is the list index. On a mapping, position is the field
+  order in `data.yaml`, which is fragile: use key names for mappings.
+- **`include` order is output order.** For list sections the rendered order
+  follows the indices you write, not the order in `data.yaml`, so reorder
+  entries by reordering indices.
+- **Negative indices in `include` count from the end.** `-1` is the last
+  entry, `-2` the penultimate, and they can be mixed with positive indices.
+  They break when `data.yaml` changes, so recheck them before finishing.
+- **Do not mix strings and integers in one `include` on a list.** A string is
+  looked up as a key on a list, finds nothing, and raises
+  `KeyError: "<name> is an invalid key"`. Pick one kind per field.
+- **`exclude` takes key names for mappings and non-negative indices for
+  lists.** Naming a list item's *value* (for example `- Haskell`) matches no
+  key and is silently ignored. A negative index in `exclude` is silently
+  ignored too.
+- **There is no `exclude: all`.** The string is treated as a key name and
+  ignored; it does not drop the field.
+- **`include` and `exclude` can be combined on one key.** `include` copies the
+  selection, then `exclude` prunes it.
+- **`exclude` works without `include`.** The whole field is copied first and
+  then pruned, e.g. `experience: { exclude: [0] }`.
+- **Nested filters are one-key mappings inside `include`**, as in
+  `- courses: { include: [...] }`. They only work through mapping keys: a list
+  element cannot be nested into, so you cannot select individual experience or
+  project bullets. Per-project bullets are all or nothing.
+- **A missing key raises `KeyError`**, whether it is a top-level key or a key
+  inside `include` or a nested filter.
+- **A top-level value must be null or a mapping.** A scalar such as `name: 5`
+  raises `TypeError`.
+
+## Rules
+
+- **Never edit `data.yaml`.** If the best evidence for the role is missing
+  from it, say so; do not invent or reword content.
+- **Keep every top-level section** listed in the shape table. Resume views trim
+  within sections; they cannot drop one.
+- **Always re-read `data.yaml` before writing indices.** They are positions,
+  so they go stale as soon as the data changes.
+- **Tailor across every section**, not just `skills`. The posting's keywords
+  should influence which experience and projects appear and in what order.
+- **Leave out what does not help.** An unrelated entry costs space and
+  attention; the resume should stay one page.
+- **Do not mirror the posting so literally** that you drop relevant context or
+  the most recent role.
 
 ## Verify
 
-List indices are positions in `data.yaml`, so confirm them against the current
-`data.yaml` (read it, don't edit it). 
-Run `uv run render -m r -r tailored-resumes/<view>` and inspect
-`dist/resume/resume.tex`; the INFO log prints the filtered `SimpleNamespace`
-so you can confirm what survived the filter. Build the PDF with
-`scripts/render_resume.sh`.
-
-Before finishing, cross-check the rendered view against the parsed job
-description: the strongest matching experience/projects should be present and
-included skills should cover the technologies the posting names. Re-fetch with
-`webfetch` only if the posting changed or you need to confirm a keyword.
+1. Run `uv run render -m r -r tailored-resumes/<view>` and check the exit
+   status. The `INFO` log prints the filtered tree, so read it to confirm what
+   survived.
+2. Inspect `dist/resume/resume.tex` for the entries you meant to include, in
+   the order you meant, and for no missing sections.
+3. Compile with `pdflatex` and confirm the output is one page. If it spills
+   over, trim entries rather than shrinking content.
+4. Compare the result against the extracted requirements: the strongest
+   matching experience and projects should be present, and the included skills
+   and certifications should cover the technologies the posting names.
+5. Confirm the view file and PDF exist under the expected base name, and that
+   the upload link was copied or printed when the upload ran.
