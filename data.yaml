@@ -20,7 +20,7 @@ education:
   gpa: 4.0
   courses:
     - Data Structures and Algorithms
-    - Computer Systems
+    - Computer Systems and Networking
     - Linear Algebra
     - Statistics
     - Cryptography
