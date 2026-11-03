@@ -156,7 +156,7 @@ Rules the parser actually enforces (see `src/render/parser.py`):
 - **`include` ordering wins.** List sections render in the index order you write, not in `data.yaml` order, so you can reorder entries by reordering indices.
 - **Negative indices work in `include`** (`-1` is the last entry) and can be mixed with positive ones.
 - **`exclude` takes indices for lists and key names for objects.** `exclude` on a *list* only accepts integer indices (use non-negative ones: a negative index is silently ignored); `exclude` on an *object* takes field names. Naming a list item's value in `exclude` does nothing.
-- **Don't mix integer indices and string keys in one `include`.** The string-keyed entries survive and the indexed ones are silently dropped, which is rarely what you meant.
+- **Don't mix integer indices and string keys in one `include`.** A string is looked up as a key, so mixing them on a *list* raises `KeyError` (`"<name> is an invalid key"`); on a *mapping* the integers select fields by their order in `data.yaml`, which is fragile. Use one kind per field.
 - **`include: all`, or omitting `include` entirely, keeps the whole field.**
 - **A key that doesn't exist raises `KeyError`**, whether it's a top-level key or a field inside `include`. A top-level value must be null or a mapping; a scalar (e.g. `name: 5`) raises `TypeError`.
 - **A resume view must keep every section the LaTeX renderer reads** (`name`, `info`, `education`, `experience`, `projects`, `skills`, `certifications`) or rendering fails. Trim *within* sections instead of dropping them.
