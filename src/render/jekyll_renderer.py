@@ -90,7 +90,8 @@ order: {self._order_index}
                     *[f"- {item}" for item in items],
                     "{% endcapture %}",
                     "{% include dropdown-list.html " 
-                      + f"title='{category.replace("_", " ").title()}' " 
+                      # TODO: Hardcoded fix, but works for now. Need to find a better way to handle this.
+                      + f"title='{category.replace("_", " ").title().replace("Ai ", "AI ")}' "
                       + f"content={category}_list "
                       + f"short=true"
                       + " %}"
