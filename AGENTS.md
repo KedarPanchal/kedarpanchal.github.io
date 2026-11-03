@@ -31,7 +31,7 @@ There are no tests, linters, or typecheck configs. Verify changes by running `uv
 
 ## CI (`.github/workflows/render.yaml`)
 
-A push to `main` starts the workflow only when it touches one of the `on.push.paths` entries: `data.yaml`, `resume.view.yaml`, `site.view.yaml`, `src/render/renderer.py`, `site/**`, or the workflow itself. That gate omits `src/render/latex_renderer.py` and `src/render/jekyll_renderer.py`, so a renderer-only edit starts no run even though the job filters below list them.
+A push to `main` starts the workflow when it touches one of the `on.push.paths` entries: `data.yaml`, `resume.view.yaml`, `site.view.yaml`, `src/render/renderer.py`, `src/render/latex_renderer.py`, `src/render/jekyll_renderer.py`, `site/**`, or the workflow itself.
 
 Once triggered, `dorny/paths-filter` decides whether to rebuild the resume, the site, or both:
 - resume: `data.yaml`, `resume.view.yaml`, `renderer.py`, `latex_renderer.py`, the workflow

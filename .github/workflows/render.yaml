@@ -8,6 +8,8 @@ on:
       - site.view.yaml
       - .github/workflows/render.yaml
       - src/render/renderer.py
+      - src/render/latex_renderer.py
+      - src/render/jekyll_renderer.py
       - site/**
     branches:
       - main
