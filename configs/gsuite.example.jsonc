@@ -1,0 +1,7 @@
+// Configuration for Google Drive integration
+// It specifies the folder IDs where resumes and cover letters are stored.
+
+{
+    "resume_folder_id": "abc123",
+    "cover_letter_folder_id": "def456"
+}

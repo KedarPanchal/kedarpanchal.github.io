@@ -89,6 +89,12 @@ and a PDF with the same base name in `cover-letters/`.
    recommended by `pdf-handling`); keep print-friendly margins and readable
    body text. Verify the PDF exists and is non-zero length before finishing.
 
+6. Upload the generated PDF to Google Drive using your `google-docs-skill`. The 
+   folder ID can be found in the `cover_letter_folder_id` key in 
+   `configs/gsuite.jsonc` at the top-level of this repository. After the upload,
+   pipe the `web_view_link` returned by the command' JSON output to `pbcopy` to
+   copy it to the clipboard.
+
 ## Rules
 
 - **Never edit `data.yaml`.** If the strongest experience for the role is not

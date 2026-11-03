@@ -41,8 +41,14 @@ changing `data.yaml`.
    ```
 
    This writes `dist/resume/resume.tex`. Compile the LaTeX to PDF with `pdflatex`.
-6. Move the generated resume PDF in dist/resume/resume.pdf to the tailored-resumes folder and rename it to match the view file (e.g.
+6. Move the generated resume PDF in dist/resume/resume.pdf to the 
+   `tailored-resumes` folder and rename it to match the view file (e.g.
    `tailored-resumes/acme-backend.pdf`).
+7. Upload the named and moved PDF to Google Drive using your `google-docs-skill`. 
+   The folder ID can be found in the `resume_folder_id` key in `configs/gsuite.jsonc` 
+   at the top-level of this repository. After the upload, pipe the 
+   `web_view_link` returned by the command JSON to `pbcopy` to copy it to the 
+   clipboard.
 
 Tailoring is filter-only: a view can reorder list sections and pick skills, but
 it cannot reword bullets. If the job needs phrasing the source lacks, say so

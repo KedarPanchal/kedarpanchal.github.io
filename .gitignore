@@ -1,8 +1,11 @@
+# Build artifacts
 dist
-
-.DS_Store
 **/__pycache__/
 
+# macOS artifacts
+.DS_Store
+
+# Jekyll artifacts
 site/rendered_*
 site/_site
 site/.sass-cache
@@ -10,4 +13,10 @@ site/.jekyll-cache
 site/.jekyll-metadata
 site/vendor
 
+# Tool call/agent artifacts
 .tavily
+.freebuff
+
+# Configuration files
+configs/*
+!configs/*.example.jsonc
