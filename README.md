@@ -167,7 +167,7 @@ Rules the parser actually enforces (see `src/render/parser.py`):
 
 `.github/workflows/render.yaml` runs on every push to `main` that touches `data.yaml`, `resume.view.yaml`, `site.view.yaml`, `src/render/renderer.py`, `site/**`, or the workflow itself.
 
-1. **`changes`** — `dorny/paths-filter` decides whether the resume and the site each need rebuilding. They are independent: a change to `latex_renderer.py` rebuilds only the resume, one to `jekyll_renderer.py` or `site/**` rebuilds only the site, and edits to `renderer.py`, `data.yaml`, or the workflow rebuild both.
+1. **`changes`** — `dorny/paths-filter` decides whether the resume and the site each need rebuilding. They are independent: within a triggered run, a change to `latex_renderer.py` selects only the resume, one to `jekyll_renderer.py` or `site/**` selects only the site, and edits to `renderer.py`, `data.yaml`, or the workflow select both. Note that the push gate above omits `latex_renderer.py` and `jekyll_renderer.py`, so an edit to either alone starts no run at all.
 2. **`render`** — runs `uv run render` in the `ghcr.io/astral-sh/uv` container and uploads the generated `resume.tex` and `dist/site` as artifacts.
 3. **`build-resume`** (resume changes only) — compiles `resume.tex` with `pdflatex` inside a TeX Live container.
 4. **`build-site`** (site changes only) — sets up Ruby, builds the Jekyll site from the rendered markdown, and uploads the Pages artifact.
