@@ -23,7 +23,7 @@ There are no tests, linters, or typecheck configs. Verify changes by running `uv
 - **Hardcoded paths.** The parser always reads `data.yaml` and `site.view.yaml` from CWD, and writes to `dist/resume/resume.tex` / `dist/site`. Run from repo root.
 - **Network call during site render.** `JekyllRenderer._get_opengraph_url` fetches each project's `url` to scrape its `og:image`, falling back to a placehold.co image. Site rendering requires network and hits external sites.
 - **View files are filters, not data.** `*.view.yaml` select/trim fields from `data.yaml` via `include`/`exclude` (string keys, integer list-indices, or `all`). You *cannot* mix integer indices and string keys under one `include`. `resume.view.yaml` and `site.view.yaml` can differ (e.g. resume excludes some courses/skills).
-- **LaTeX escaping is manual and partial.** Renderers only escape a few chars (`&`, `%`) in specific fields. New special LaTeX chars in `data.yaml` can break the PDF build.
+- **LaTeX escaping lives in `latex_renderer.py`.** `escape_latex` escapes `\ & % $ # _ { } ~ ^` and is applied to every field the resume renderer prints; add it to any new field you render.
 - Generated outputs (`dist/`, `site/rendered_*`, `site/_site`) are gitignored — don't commit them.
 
 ## CI (`.github/workflows/render.yaml`)

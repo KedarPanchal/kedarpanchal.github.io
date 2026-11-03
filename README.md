@@ -110,7 +110,7 @@ Details worth knowing before you edit it:
 - **The site iterates `skills` categories dynamically**, so a new category (`databases:`, say) renders without code changes. The resume renderer hardcodes `languages`, `frameworks`, and `tools`, so those three must exist for a resume build.
 - **Hyphenated keys become underscores** in the renderer (`hugging-face` is read as `hugging_face`), so keep the hyphen in `data.yaml`.
 - **Every project's `url` is fetched during site rendering** and must be reachable; a missing `og:image` falls back to a placehold.co placeholder.
-- **LaTeX escaping is partial.** `&` is escaped in `university`, `company`, and `certifications`, and `%` in bullets — other special characters (`_`, `#`, `$`, `{`, `}`) in those fields can break the PDF build.
+- **LaTeX special characters are escaped for you.** The resume renderer escapes `\ & % $ # _ { } ~ ^` in every field it prints, so those characters are safe to use in `data.yaml`.
 
 ## View files
 

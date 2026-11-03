@@ -3,6 +3,26 @@ from .renderer import Renderer
 from types import SimpleNamespace
 
 
+# LaTeX special characters and their text-mode replacements. A string is escaped
+# in a single pass so replacements are never escaped again.
+_LATEX_SPECIAL_CHARS = {
+    "\\": r"\textbackslash{}",
+    "&": r"\&",
+    "%": r"\%",
+    "$": r"\$",
+    "#": r"\#",
+    "_": r"\_",
+    "{": r"\{",
+    "}": r"\}",
+    "~": r"\textasciitilde{}",
+    "^": r"\textasciicircum{}",
+}
+
+
+def escape_latex(value: object) -> str:
+    return "".join(_LATEX_SPECIAL_CHARS.get(char, char) for char in str(value))
+
+
 class LatexRenderer(Renderer):
     def __init__(self, dest: str):
         self._dest = dest
@@ -29,23 +49,29 @@ class LatexRenderer(Renderer):
 """
     
     def _info(self, src: SimpleNamespace) -> str:
+        email = escape_latex(src.info.email)
+        website = escape_latex(src.info.website)
+        linkedin = escape_latex(src.info.linkedin)
+        github = escape_latex(src.info.github)
+        hugging_face = escape_latex(src.info.hugging_face)
+
         result_list = [
             r"\begin{center}",
-            r"{\Huge \textbf{" + src.name + r"}} \\ [0.5em]",
-            r"\small \href{mailto:" + src.info.email + r"}{" + src.info.email + r"} {\textbar }",
-            r"\small " + src.info.phone + r" {\textbar }",
-            r"\small Website: \href{https://" + src.info.website + r"}{" + src.info.website + r"} {\textbar }",
-            r"\small LinkedIn: \href{https://www.linkedin.com/in/" + src.info.linkedin + r"}{" + src.info.linkedin + r"} \\",
-            r"\small GitHub: \href{https://www.github.com/" + src.info.github + r"}{" + src.info.github + r"} {\textbar }",
-            r"\small Hugging Face: \href{https://www.huggingface.co/" + src.info.hugging_face + r"}{" + src.info.hugging_face + r"}",
+            r"{\Huge \textbf{" + escape_latex(src.name) + r"}} \\ [0.5em]",
+            r"\small \href{mailto:" + email + r"}{" + email + r"} {\textbar }",
+            r"\small " + escape_latex(src.info.phone) + r" {\textbar }",
+            r"\small Website: \href{https://" + website + r"}{" + website + r"} {\textbar }",
+            r"\small LinkedIn: \href{https://www.linkedin.com/in/" + linkedin + r"}{" + linkedin + r"} \\",
+            r"\small GitHub: \href{https://www.github.com/" + github + r"}{" + github + r"} {\textbar }",
+            r"\small Hugging Face: \href{https://www.huggingface.co/" + hugging_face + r"}{" + hugging_face + r"}",
         ]
         # Add miscellaneous information if it exists
         for i, miscellany in enumerate(src.info.miscellaneous):
             # Prefix with a text bar to separate the first item from Hugging Face
             if i == 0:
-                to_append = r"{\textbar } \small " + miscellany
+                to_append = r"{\textbar } \small " + escape_latex(miscellany)
             else:
-                to_append = r"\small " + miscellany
+                to_append = r"\small " + escape_latex(miscellany)
             # Only add the separator if it's not the last item in the list
             if i < len(src.info.miscellaneous) - 1:
                 to_append += r" {\textbar }"
@@ -57,11 +83,11 @@ class LatexRenderer(Renderer):
     def _education(self, src: SimpleNamespace) -> str:
         result_list = [
             r"\resumesection{EDUCATION}",
-            r"\textbf{" + src.education.university.replace('&', r"\&") + r"} \hfill " + src.education.location + r"\\",
-            r"\textit{" + src.education.degree + r"} \hfill \textit{" + f"{src.education.start} - {src.education.end}" + r"}",
+            r"\textbf{" + escape_latex(src.education.university) + r"} \hfill " + escape_latex(src.education.location) + r"\\",
+            r"\textit{" + escape_latex(src.education.degree) + r"} \hfill \textit{" + f"{escape_latex(src.education.start)} - {escape_latex(src.education.end)}" + r"}",
             r"\begin{itemize}",
-            r"\item \textbf{GPA:} " + str(src.education.gpa),
-            r"\item \textbf{Relevant Coursework:} " + ', '.join(src.education.courses),
+            r"\item \textbf{GPA:} " + escape_latex(src.education.gpa),
+            r"\item \textbf{Relevant Coursework:} " + ', '.join(escape_latex(course) for course in src.education.courses),
             r"\end{itemize}",
         ]
         return '\n'.join(result_list)
@@ -72,10 +98,10 @@ class LatexRenderer(Renderer):
         ]
         for experience in src.experience:
             result_list += [
-                r"\noindent\textbf{" + experience.company.replace('&', r"\&") + r"} \hfill " + experience.location + r"\\",
-                r"\textit{" + experience.title + r"} \hfill \textit{" + f"{experience.start} - {experience.end}" + r"}",
+                r"\noindent\textbf{" + escape_latex(experience.company) + r"} \hfill " + escape_latex(experience.location) + r"\\",
+                r"\textit{" + escape_latex(experience.title) + r"} \hfill \textit{" + f"{escape_latex(experience.start)} - {escape_latex(experience.end)}" + r"}",
                 r"\begin{itemize}",
-                *[r"\item " + bullet.replace('%', r"\%") for bullet in experience.bullets],
+                *[r"\item " + escape_latex(bullet) for bullet in experience.bullets],
                 r"\end{itemize}",
             ]
         return '\n'.join(result_list)
@@ -86,9 +112,9 @@ class LatexRenderer(Renderer):
         ]
         for project in src.projects:
             result_list += [
-                r"\noindent\textbf{" + project.title + r"} \hfill \textit{" + f"{project.start} - {project.end}" + r"}",
+                r"\noindent\textbf{" + escape_latex(project.title) + r"} \hfill \textit{" + f"{escape_latex(project.start)} - {escape_latex(project.end)}" + r"}",
                 r"\begin{itemize}",
-                *[r"\item " + bullet.replace('%', r"\%") for bullet in project.bullets],
+                *[r"\item " + escape_latex(bullet) for bullet in project.bullets],
                 r"\end{itemize}",
             ]
         return '\n'.join(result_list)
@@ -97,10 +123,10 @@ class LatexRenderer(Renderer):
         result_list = [
             r"\resumesection{SKILLS \& CERTIFICATIONS}",
             r"\begin{itemize}",
-            r"\item \textbf{Programming Languages:} " + ', '.join(src.skills.languages),
-            r"\item \textbf{Frameworks:} " + ', '.join(src.skills.frameworks),
-            r"\item \textbf{Tools:} " + ', '.join(src.skills.tools),
-            r"\item \textbf{Certifications:} " + ', '.join(map(lambda c: c.replace('&', r"\&"), src.certifications)),
+            r"\item \textbf{Programming Languages:} " + ', '.join(escape_latex(language) for language in src.skills.languages),
+            r"\item \textbf{Frameworks:} " + ', '.join(escape_latex(framework) for framework in src.skills.frameworks),
+            r"\item \textbf{Tools:} " + ', '.join(escape_latex(tool) for tool in src.skills.tools),
+            r"\item \textbf{Certifications:} " + ', '.join(escape_latex(certification) for certification in src.certifications),
             r"\end{itemize}"
         ]
         return '\n'.join(result_list)
@@ -114,6 +140,3 @@ class LatexRenderer(Renderer):
             f.write(self._projects(src))
             f.write(self._skills_certifications(src))
             f.write(r"\end{document}")
-
-
-
