@@ -22,13 +22,12 @@ experience:
     - 1
     - 2
     - 3
-    - 4
 
 projects:
   include:
     - 0
-    - 1
-    - 3
+    - 2
+    - -2
 
 skills:
   include:

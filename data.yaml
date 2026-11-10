@@ -92,6 +92,16 @@ experience:
       - Constructed the 3-D printed robot apparatus used in experiments.
   
 projects:
+  - title: Autonomous Fly-Actuated Rescuer
+    start: October 2026
+    end: November 2026
+    url: https://github.com/KedarPanchal/Autonomous-Fly-Actuated-Rescuer
+    bullets:
+      - Built autonomous search and rescue drone powered by neural model of real fruit fly brain for Meta's Global AI Hackathon.
+      - 4.6 million+ synapse subset of fruit fly brain controlled drone movement and collision avoidance using leaky integrate-and-fire model.
+      - Neurons stimulated using camera and LiDAR data recorded from ROS2 and Gazebo simulation environment to trigger simple movements or immediate escape reflexes.
+      - Meta Muse Spark stimulated reproductive neurons to guide drone to investigate rescue targets or follow boustrophedon search pattern.
+      - Built Gazebo environments for forest, cave, and collapsed building rescue with 74+ automated tests covering motion planner, perception, and fly brain control.
   - title: SWRM
     start: September 2026
     end: Present
@@ -162,12 +172,11 @@ skills:
     - Redis
   ai_tools:
     - Claude
+    - Codex
     - GitHub Copilot
+    - Muse Code
     - OpenCode
     - llama.cpp
-    - Perplexity
-    - Freebuff
-    - Tavily MCP
 
 certifications:
   - Get Started with Redis
