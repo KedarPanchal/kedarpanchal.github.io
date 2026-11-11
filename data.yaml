@@ -159,6 +159,7 @@ skills:
     - Next.js
     - React.js
     - ROS2
+    - PyTorch
   tools:
     - Docker
     - Git
