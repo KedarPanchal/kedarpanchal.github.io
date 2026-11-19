@@ -60,7 +60,8 @@ experience:
     bullets:
       - Designed and analyzed coverage algorithms for robots with limited sensing capabilities in polygonal environments with obstacles.
       - Built a C++/CGAL simulation environment with exact polygon arithmetic to validate algorithm correctness and coverage.
-      - Reduced peak memory use by 90% and runtime by 85% by diagnosing redundant computations and caching repeated results.
+      - Reduced peak memory use by 90% and runtime by 85% via SQLite caching and lazy geometry computations on 20,000+ polygons.
+      - Parallelized computations across multiple synchronized threads using mutexes and thread pools, further reducing runtime.
       - Debugged heap-use-after-free errors and geometric inconsistencies using LLDB and AddressSanitizer.
   - title: AI Engineer
     company: Firelight Innovations
@@ -98,10 +99,10 @@ projects:
     url: https://github.com/KedarPanchal/Autonomous-Fly-Actuated-Rescuer
     bullets:
       - Built autonomous search and rescue drone powered by neural model of real fruit fly brain for Meta's Global AI Hackathon.
-      - 4.6 million+ synapse subset of fruit fly brain controlled drone movement and collision avoidance using leaky integrate-and-fire model.
-      - Neurons stimulated using camera and LiDAR data recorded from ROS2 and Gazebo simulation environment to trigger simple movements or immediate escape reflexes.
-      - Meta Muse Spark stimulated reproductive neurons to guide drone to investigate rescue targets or follow boustrophedon search pattern.
-      - Built Gazebo environments for forest, cave, and collapsed building rescue with 74+ automated tests covering motion planner, perception, and fly brain control.
+      - 4.6 million+ synapse subset of fruit fly brain controlled drone movement and collision avoidance using integrate-and-fire model.
+      - Neurons stimulated using camera and LiDAR data recorded from ROS2 and Gazebo simulation environment.
+      - Meta Muse Spark stimulated reproductive neurons to guide drone to investigate rescue targets or follow boustrophedon search.
+      - Developed 74+ automated tests covering motion planner, perception, and fly brain control.
   - title: SWRM
     start: September 2026
     end: Present
