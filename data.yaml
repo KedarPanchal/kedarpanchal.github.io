@@ -172,6 +172,8 @@ skills:
     - Maven
     - CMake
     - Redis
+    - Visual Studio Code
+    - Vim
   ai_tools:
     - Claude
     - Codex
